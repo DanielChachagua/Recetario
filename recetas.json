@@ -1,0 +1,58 @@
+{
+    "recetas": [
+        {
+            "Nombre": "Empanadas",
+            "Ingredientes": [
+                [
+                    500,
+                    "gr",
+                    "carne"
+                ],
+                [
+                    200,
+                    "gr",
+                    "cebolla"
+                ],
+                [
+                    1,
+                    "un",
+                    "morron"
+                ],
+                [
+                    200,
+                    "gr",
+                    "papa"
+                ]
+            ],
+            "Preparacion": "cortar y cocinar las verduras. agregar la carne y cocinar. armar las empanadas y hornear\n",
+            "Imagen": "empanadas-saltenas.jpg",
+            "Tiempo_preparacion": 120,
+            "Tiempo_coccion": 20,
+            "Fecha_creacion": "2023-03-16",
+            "Etiquetas": "horno,frita",
+            "Favorita": false
+        },
+        {
+            "Nombre": "Lasagna",
+            "Ingredientes": [
+                [
+                    500,
+                    "gr",
+                    "carne"
+                ],
+                [
+                    500,
+                    "gr",
+                    "verduras varias"
+                ]
+            ],
+            "Preparacion": "cocinar verturas.\ncocinar salsa con la carne.\nponer en fuente intercalando la carne y la verdura formando pisos.\ny hornear\n",
+            "Imagen": "Lasagna-Recipe-f.jpg",
+            "Tiempo_preparacion": 130,
+            "Tiempo_coccion": 20,
+            "Fecha_creacion": "2023-03-16",
+            "Etiquetas": "pastas",
+            "Favorita": false
+        }
+    ]
+}
