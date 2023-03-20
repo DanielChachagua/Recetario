@@ -3,8 +3,6 @@ from tkinter import *
 from tkinter import filedialog
 import tkinter as tk
 from PIL import Image,ImageTk 
-import os
-
 from Receta import Receta
 
 class VentanaAgregar(ttk.Frame):
@@ -20,15 +18,19 @@ class VentanaAgregar(ttk.Frame):
         self.tiempo_prep=IntVar()
         self.tiempo_coc=IntVar()
         self.etiqueta=StringVar()
-        self.favorita=StringVar()
-            
+        self.favorita=IntVar() 
+        
+        self.tipo=self.fav_boolean()   
+                   
         width=650
         height=550
         screenwidth = self.winfo_screenwidth()
         screenheight = self.winfo_screenheight()
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-        self.parent.geometry(alignstr) 
-        
+        self.parent.geometry(alignstr)
+        parent.title('Agregar Recetas') 
+        parent.iconbitmap('media/icono_recetario.ico')
+
         self.frame=ttk.Frame(parent)
         self.frame.grid()
         
@@ -81,7 +83,6 @@ class VentanaAgregar(ttk.Frame):
         self.agregar_ing=ttk.Button(self.frame_ing,text='Agregar',command=lambda:agregar_ing()).grid(row=2,column=0)
         self.eliminar_ing=ttk.Button(self.frame_ing,text='Eliminar',command=lambda:eliminar_ing()).grid(row=2,column=2)
 
-        
         def eliminar_ing():
             seleccion = self.tabla_ing.selection()
             if seleccion:
@@ -121,20 +122,22 @@ class VentanaAgregar(ttk.Frame):
         self.ent_etiqueta=ttk.Entry(self.frame,textvariable=self.etiqueta,justify='center')
         self.ent_etiqueta.grid(row=10,column=2)
         
-        self.lb_favorita=ttk.Label(self.frame,text='Favorita')
-        self.lb_favorita.grid(row=11,column=1)
-        self.ent_favorita=ttk.Entry(self.frame,textvariable=self.favorita,justify='center')
-        self.ent_favorita.grid(row=11,column=2)
-        
+        self.check_fav=ttk.Checkbutton(self.frame,text='Favorita',variable=self.favorita).grid(row=11,column=1,columnspan=2)
+            
         self.btn_guardar=ttk.Button(self.frame,text='Agregar',command=self.guardar)
         self.btn_guardar.grid(row=12,column=1,columnspan=2)
         
         self.btn_salir=ttk.Button(self.frame,text='Salir',command=parent.destroy)
         self.btn_salir.grid(row=13,column=1,columnspan=2)
         
-        
         self.path_img=None
-     
+    
+    def fav_boolean(self):
+            if self.favorita.get()==1:
+                return True
+            else:
+                return False
+             
     def obtener_ing(self):
             items=self.tabla_ing.get_children()
             lista_ing=[]
@@ -155,7 +158,7 @@ class VentanaAgregar(ttk.Frame):
                 imagen=self.imagen.resize((290,220),Image.LANCZOS)
                 self.img=ImageTk.PhotoImage(imagen)
                 self.lb_img=ttk.Label(self.frame_img,image=self.img)
-                self.lb_img.grid()        
+                self.lb_img.grid()                 
       
     def guardar(self):
         try:
@@ -171,7 +174,7 @@ class VentanaAgregar(ttk.Frame):
                 self.imagen.save('media/'+ruta)
             else:
                 ruta='sin_imagen.jpg'     
-            Receta(self.nombre.get(),self.obtener_ing(),str(self.ent_preparacion.get('0.0','end')),self.tiempo_prep.get(),self.tiempo_coc.get(),self.ent_etiqueta.get(),ruta).crear_receta()
+            Receta(self.nombre.get(),self.obtener_ing(),str(self.ent_preparacion.get('0.0','end')),self.tiempo_prep.get(),self.tiempo_coc.get(),self.ent_etiqueta.get(),ruta,bool(self.fav_boolean)).crear_receta()
             messagebox.showinfo(message="Receta guardada con éxito!!!") 
         except:
             messagebox.showerror(message='Asegúrese de cargar bien todos los campos con sus datos correctos')
