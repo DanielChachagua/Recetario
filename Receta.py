@@ -1,5 +1,6 @@
 import datetime
 import json
+import random
 
 class Receta:
     def __init__(self, nombre, ingredientes, preparacion, tiempo_preparacion, 
@@ -13,6 +14,7 @@ class Receta:
         self.tiempo_coccion=tiempo_coccion
         self.fecha_creacion=(str) (datetime.datetime.now().date())
         self.etiquetas=etiquetas
+        print(favorita)
         self.favorita=favorita
         try:
             with open('recetas.json','x')as archivo:
@@ -86,8 +88,10 @@ class Receta:
         except:
             print('Hubo un problema, no se encuentra elemento!!!')                  
                   
-    def receta_del_dia(self):
-        pass
+    def receta_del_dia():
+        with open('recetas.json','r') as archivo:
+            lista=json.load(archivo) 
+        return random.choice(lista['recetas'])        
     
     def buscar_receta_nombre(nombre):
         try:

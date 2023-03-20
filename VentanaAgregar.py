@@ -173,8 +173,9 @@ class VentanaAgregar(ttk.Frame):
                 ruta=ruta_inv[::-1]
                 self.imagen.save('media/'+ruta)
             else:
-                ruta='sin_imagen.jpg'     
-            Receta(self.nombre.get(),self.obtener_ing(),str(self.ent_preparacion.get('0.0','end')),self.tiempo_prep.get(),self.tiempo_coc.get(),self.ent_etiqueta.get(),ruta,bool(self.fav_boolean)).crear_receta()
+                ruta='sin_imagen.jpg'    
+            print(self.fav_boolean())     
+            Receta(str(self.nombre.get()),self.obtener_ing(),str(self.ent_preparacion.get('0.0','end')),self.tiempo_prep.get(),self.tiempo_coc.get(),self.ent_etiqueta.get(),ruta,bool(self.fav_boolean)).crear_receta()
             messagebox.showinfo(message="Receta guardada con éxito!!!") 
         except:
             messagebox.showerror(message='Asegúrese de cargar bien todos los campos con sus datos correctos')

@@ -126,13 +126,7 @@ class VentanaEditar(ttk.Frame):
         self.ent_etiqueta=ttk.Entry(self.frame,textvariable=self.etiqueta,justify='center')
         self.ent_etiqueta.grid(row=10,column=2)
         
-        # self.lb_favorita=ttk.Label(self.frame,text='Favorita')
-        # self.lb_favorita.grid(row=11,column=1)
-        # self.ent_favorita=ttk.Entry(self.frame,textvariable=self.favorita,justify='center')
-        # self.ent_favorita.grid(row=11,column=2)
-        
         self.check_fav=ttk.Checkbutton(self.frame,text='Favorita',variable=self.favorita).grid(row=11,column=1,columnspan=2)
-
         
         self.btn_guardar=ttk.Button(self.frame,text='Agregar',command=self.guardar)
         self.btn_guardar.grid(row=12,column=1,columnspan=2)
@@ -151,9 +145,6 @@ class VentanaEditar(ttk.Frame):
         self.etiqueta.set(etiqueta)
         for ing in ingrediente:
             self.tabla_ing.insert("","end",values=(ing[0],ing[1],ing[2]))
-        # self.bool_fav=favorita
-        # self.bool_favotiro()
-        # self.ruta_img=mostrar_imagen
         try:
             self.imagen=Image.open('media/'+mostrar_imagen)
             imagen=self.imagen.resize((290,220),Image.LANCZOS)
@@ -211,7 +202,7 @@ class VentanaEditar(ttk.Frame):
                 self.imagen.save('media/'+ruta)
             else:
                  ruta=self.ruta_img    
-            Receta(self.nombre.get(),self.obtener_ing(),str(self.ent_preparacion.get('0.0','end')),self.tiempo_prep.get(),self.tiempo_coc.get(),self.ent_etiqueta.get(),ruta,self.fav_boolean()).modificar_receta()
+            Receta(str(self.nombre.get()),self.obtener_ing(),str(self.ent_preparacion.get('0.0','end')),self.tiempo_prep.get(),self.tiempo_coc.get(),self.ent_etiqueta.get(),ruta,self.fav_boolean()).modificar_receta()
             messagebox.showinfo(message="Receta modificada con éxito!!!") 
             self.parent.destroy()
         except:

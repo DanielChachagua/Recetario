@@ -22,18 +22,43 @@ class App(ttk.Frame):
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
         parent.geometry(alignstr)
         parent.title('BiblioRecetas')
-        parent.iconbitmap('media/icono_recetario.ico')
+        self.parent.iconbitmap('media/icono_recetario.ico')
  
         self.frame=tk.Frame(parent)
         self.frame.pack(expand=1)
+        
+        self.combo_lista=StringVar()
+        self.combo_elementos=StringVar()
         
         carpeta_principal=os.path.dirname(__file__)
         self.carpeta_img=os.path.join(carpeta_principal,'media')
         imagen_logo=Image.open(os.path.join(self.carpeta_img,'imagen recetario final.png'))
         self.img_logo=ImageTk.PhotoImage(imagen_logo)
-        imagen_red_logo=imagen_logo.resize((300,250),Image.ANTIALIAS)
+        imagen_red_logo=imagen_logo.resize((300,250),Image.LANCZOS)
         self.img_logo=ImageTk.PhotoImage(imagen_red_logo)
         self.lb_imagen_recetario=ttk.Label(self.frame,image=self.img_logo).grid(row=0,column=0,columnspan=2)
+        
+        self.frame_filtro=ttk.Frame(self.frame)
+        self.frame_filtro=ttk.Labelframe(self.frame,text='Filtrar')
+        self.frame_filtro.grid(row=1,column=1,columnspan=2)
+        
+        self.lb_filtro=ttk.Label(self.frame_filtro,text='Filtrar por: ').grid(row=0,column=0)
+        
+        self.lista_filtro=ttk.Combobox(self.frame_filtro,textvariable=self.combo_lista)
+        self.lista_filtro["values"] = ('Nombre','Etiqueta','Tiempo de Preparación','Ingrediente','Favorita')
+        self.lista_filtro["state"] = "readonly"        
+        self.lista_filtro.grid(row=0,column=1)
+        print(self.combo_lista.get())
+        self.lista_filtro.bind('<<ComboboxSelected>>', self.elementos_lista)
+        
+        self.lb_seleccion=ttk.Label(self.frame_filtro,text='Elegir opción: ').grid(row=1,column=0)
+
+        self.lista_filtro=ttk.Combobox(self.frame_filtro,textvariable=self.combo_elementos)
+        # self.lista_filtro["values"] = self.elementos_lista(self.combo_lista.get())
+        self.lista_filtro["state"] = "readonly"        
+        self.lista_filtro.grid(row=1,column=1)
+        
+        self.btn_filtrar=ttk.Button(self.frame_filtro,text='Filtrar').grid(row=2,column=0,columnspan=2)
         
         self.btn_agregar=ttk.Button(self.frame,text='Agregar Receta',command=self.ventana_agregar)
         self.btn_agregar.grid(row=5,column=0)
@@ -46,6 +71,9 @@ class App(ttk.Frame):
         
         self.btn_mostrar=ttk.Button(self.frame,text='Ver Receta',command=self.ver_receta)
         self.btn_mostrar.grid(row=6,column=1)
+        
+        self.btn_receta_aleatoria=ttk.Button(self.frame,text='Receta del Día',command=self.ver_receta_aleatoria)
+        self.btn_receta_aleatoria.grid(row=7,column=0)
         
         frame_lista=ttk.Frame(self.frame)
         frame_lista=LabelFrame(self.frame,text='Recetas')
@@ -66,8 +94,7 @@ class App(ttk.Frame):
     
         if not os.path.exists(self.carpeta_img):
             os.makedirs(self.carpeta_img) 
-        #parent.iconbitmap(os.path.join(carpeta_img,'emp.jpg'))
-        
+                    
         self.tabla.column('#0',width=120,anchor='center')
         self.tabla.column('Nombre',width=150,anchor='center')
         self.tabla.column('Tiempo de Preparación',width=120,anchor='center')
@@ -103,7 +130,7 @@ class App(ttk.Frame):
         seleccion = self.tabla.selection()
         if seleccion:
             item = self.tabla.item(seleccion)
-            fila = item['values'][0] 
+            fila = str(item['values'][0]) 
             for item in seleccion:
                 res = askokcancel(title="Eliminar fila",
                     message=("Eliminar receta?"
@@ -126,6 +153,43 @@ class App(ttk.Frame):
                         receta.get('Fecha_creacion'))
         else:
             showinfo(message="Debe seleccionar un elemento primero") 
+            
+    def ver_receta_aleatoria(self):
+        receta=Receta.receta_del_dia()
+        toplevel=tk.Toplevel(self.parent)
+        MostrarReceta(toplevel,receta.get('Nombre'),receta.get('Etiquetas'),receta.get('Tiempo_preparacion'),
+                        receta.get('Tiempo_coccion'),receta.get('Ingredientes'),receta.get('Imagen'),receta.get('Preparacion'),
+                        receta.get('Fecha_creacion'))     
+    
+    def elementos_lista(self,evento):
+        elemento_a_filtrar=self.combo_lista.get()
+        lista=[]
+        self.combo_elementos.set('')
+        if elemento_a_filtrar=='Nombre':
+            for r in Receta.lista_recetas():
+                lista.append(r['Nombre'])
+        if elemento_a_filtrar=='Etiqueta':
+            conj=set()
+            for r in Receta.lista_recetas():
+                cade=r['Etiquetas']
+                l_cade=cade.split(sep=',')
+                for eti in l_cade:
+                    if eti!='':
+                        conj.add(eti)
+            lista=tuple(conj)        
+        if elemento_a_filtrar=='Tiempo de Preparación':
+            for r in Receta.lista_recetas():
+                lista.append(r['Tiempo_preparacion'])
+        if elemento_a_filtrar=='Ingrediente':
+            conj=set()
+            for receta in Receta.lista_recetas():
+                for r in receta['Ingredientes']:
+                    conj.add(r[2])
+            lista=tuple(conj)            
+        if elemento_a_filtrar=='Favorita':                       
+            lista = ('Es Favorita','No es Favorita')
+        self.lista_filtro["values"] = tuple(lista)    
+            
             
 root=tk.Tk()        
 App(root).mainloop()
