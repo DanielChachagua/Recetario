@@ -176,18 +176,21 @@ class App(ttk.Frame):
                 for eti in l_cade:
                     if eti!='':
                         conj.add(eti)
-            lista=tuple(conj)        
+            lista=list(conj)        
         if elemento_a_filtrar=='Tiempo de Preparación':
+            conj=set()
             for r in Receta.lista_recetas():
-                lista.append(r['Tiempo_preparacion'])
+                conj.add(r['Tiempo_preparacion'])
+            lista=list(conj)    
         if elemento_a_filtrar=='Ingrediente':
             conj=set()
             for receta in Receta.lista_recetas():
                 for r in receta['Ingredientes']:
                     conj.add(r[2])
-            lista=tuple(conj)            
+            lista=list(conj)            
         if elemento_a_filtrar=='Favorita':                       
             lista = ('Es Favorita','No es Favorita')
+        lista.sort()
         self.lista_filtro["values"] = tuple(lista)    
             
             
