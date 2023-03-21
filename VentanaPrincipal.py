@@ -54,11 +54,10 @@ class App(ttk.Frame):
         self.lb_seleccion=ttk.Label(self.frame_filtro,text='Elegir opción: ').grid(row=1,column=0)
 
         self.lista_filtro=ttk.Combobox(self.frame_filtro,textvariable=self.combo_elementos)
-        # self.lista_filtro["values"] = self.elementos_lista(self.combo_lista.get())
         self.lista_filtro["state"] = "readonly"        
         self.lista_filtro.grid(row=1,column=1)
         
-        self.btn_filtrar=ttk.Button(self.frame_filtro,text='Filtrar').grid(row=2,column=0,columnspan=2)
+        self.btn_filtrar=ttk.Button(self.frame_filtro,text='Filtrar',command=self.filtrar).grid(row=2,column=0,columnspan=2)
         
         self.btn_agregar=ttk.Button(self.frame,text='Agregar Receta',command=self.ventana_agregar)
         self.btn_agregar.grid(row=5,column=0)
@@ -105,11 +104,11 @@ class App(ttk.Frame):
             self.tabla.delete(i)
         for r in Receta.lista_recetas():
             imagen=Image.open(os.path.join(self.carpeta_img,r['Imagen']))
-            self.img=ImageTk.PhotoImage(imagen)
             imagen_red=imagen.resize((120,80),Image.LANCZOS)
             self.img_red=ImageTk.PhotoImage(imagen_red)
             self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
-        
+            #self.tabla.bind("<<TreeviewSelect>>", self.ver_receta)
+            
     def ventana_agregar(self):
         toplevel=tk.Toplevel(self.parent)
         VentanaAgregar(toplevel)
@@ -139,9 +138,9 @@ class App(ttk.Frame):
                     self.tabla.delete(item)
                     Receta.eliminar_receta(fila)
         else:
-            showinfo(message="Debe seleccionar un elemento primero")         
-    
-    def ver_receta(self):
+            showinfo(message="Debe seleccionar un elemento primero")  
+            
+    def ver_receta(self):#si se coloca un event se puede utilizar la funcion de ver solo seleccionando la receta
         seleccion = self.tabla.selection()
         if seleccion:
             item = self.tabla.item(seleccion)
@@ -189,10 +188,60 @@ class App(ttk.Frame):
                     conj.add(r[2])
             lista=list(conj)            
         if elemento_a_filtrar=='Favorita':                       
-            lista = ('Es Favorita','No es Favorita')
+            lista = ['Es Favorita','No es Favorita']
         lista.sort()
         self.lista_filtro["values"] = tuple(lista)    
+    
+    def filtrar(self):
+        elemento_a_filtrar=self.combo_lista.get()
+        for i in self.tabla.get_children():
+            self.tabla.delete(i)
+        if elemento_a_filtrar=='Nombre':
+            for r in Receta.lista_recetas():
+                if r['Nombre']==self.combo_elementos.get():
+                    imagen=Image.open(os.path.join(self.carpeta_img,r['Imagen']))
+                    imagen_red=imagen.resize((120,80),Image.LANCZOS)
+                    self.img_red=ImageTk.PhotoImage(imagen_red)
+                    self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
+
+        if elemento_a_filtrar=='Etiqueta':
+            for r in Receta.lista_recetas():
+                if self.combo_elementos.get() in r['Etiquetas'].split(sep=','):
+                    imagen=Image.open(os.path.join(self.carpeta_img,r['Imagen']))
+                    imagen_red=imagen.resize((120,80),Image.LANCZOS)
+                    self.img_red=ImageTk.PhotoImage(imagen_red)
+                    self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
+      
+        if elemento_a_filtrar=='Tiempo de Preparación':
+            for r in Receta.lista_recetas():
+                if str(r['Tiempo_preparacion'])==self.combo_elementos.get():
+                    imagen=Image.open(os.path.join(self.carpeta_img,r['Imagen']))
+                    imagen_red=imagen.resize((120,80),Image.LANCZOS)
+                    self.img_red=ImageTk.PhotoImage(imagen_red)
+                    self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
+   
+        if elemento_a_filtrar=='Ingrediente':
+            for r in Receta.lista_recetas():
+                for ing in r['Ingredientes']:
+                    if ing[2]==self.combo_elementos.get():
+                        imagen=Image.open(os.path.join(self.carpeta_img,r['Imagen']))
+                        imagen_red=imagen.resize((120,80),Image.LANCZOS)
+                        self.img_red=ImageTk.PhotoImage(imagen_red)
+                        self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
             
+        if elemento_a_filtrar=='Favorita':
+            fav=bool
+            if self.combo_elementos.get()=='Es Favorita':
+                fav=True                       
+            else:
+                fav=False    
+            for r in Receta.lista_recetas():
+                if r['Favorita']==fav:
+                    imagen=Image.open(os.path.join(self.carpeta_img,r['Imagen']))
+                    imagen_red=imagen.resize((120,80),Image.LANCZOS)
+                    self.img_red=ImageTk.PhotoImage(imagen_red)
+                    self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
+       
             
 root=tk.Tk()        
 App(root).mainloop()

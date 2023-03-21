@@ -128,7 +128,7 @@ class VentanaEditar(ttk.Frame):
         
         self.check_fav=ttk.Checkbutton(self.frame,text='Favorita',variable=self.favorita).grid(row=11,column=1,columnspan=2)
         
-        self.btn_guardar=ttk.Button(self.frame,text='Agregar',command=self.guardar)
+        self.btn_guardar=ttk.Button(self.frame,text='Guardar',command=self.guardar)
         self.btn_guardar.grid(row=12,column=1,columnspan=2)
         
         self.btn_salir=ttk.Button(self.frame,text='Salir',command=parent.destroy)

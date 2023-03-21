@@ -73,6 +73,39 @@
             "Fecha_creacion": "2023-03-19",
             "Etiquetas": "pasta",
             "Favorita": true
+        },
+        {
+            "Nombre": "papa",
+            "Ingredientes": [
+                [
+                    3,
+                    "un",
+                    "papa"
+                ],
+                [
+                    14,
+                    "gr",
+                    "sal"
+                ]
+            ],
+            "Preparacion": "qwertyuiosdfghjsvdjanskdnaklndlaknfkjdkvjhbwbrijnfkdjbfjsdbfjankdnaksjndkjfksdbfkjsdfjb\n\n",
+            "Imagen": "123.png",
+            "Tiempo_preparacion": 120,
+            "Tiempo_coccion": 20,
+            "Fecha_creacion": "2023-03-21",
+            "Etiquetas": "rico,saludable,casero",
+            "Favorita": true
+        },
+        {
+            "Nombre": "",
+            "Ingredientes": [],
+            "Preparacion": "\n\n",
+            "Imagen": "sin_imagen.jpg",
+            "Tiempo_preparacion": 0,
+            "Tiempo_coccion": 0,
+            "Fecha_creacion": "2023-03-21",
+            "Etiquetas": "",
+            "Favorita": false
         }
     ]
 }
