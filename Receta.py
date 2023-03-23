@@ -12,7 +12,7 @@ class Receta:
         self.imagen=imagen
         self.tiempo_preparacion=tiempo_preparacion
         self.tiempo_coccion=tiempo_coccion
-        self.fecha_creacion=(str) (datetime.datetime.now().date())
+        self.fecha_creacion=(str) (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         self.etiquetas=etiquetas
         print(favorita)
         self.favorita=favorita
@@ -89,9 +89,30 @@ class Receta:
             print('Hubo un problema, no se encuentra elemento!!!')                  
                   
     def receta_del_dia():
-        with open('recetas.json','r') as archivo:
-            lista=json.load(archivo) 
-        return random.choice(lista['recetas'])        
+        try:
+            with open('receta_del_dia.json','x')as archivo:
+                data={}
+                data['recetas']=[]
+                data['fecha']=''
+                json.dump(data,archivo,indent=4)
+        except:
+                pass  
+        with open('receta_del_dia.json','r') as archivo:
+            lista=json.load(archivo)
+        if lista['fecha']!=(str)(datetime.datetime.now().strftime('%Y-%m-%d')) or lista['fecha']=='':    
+            with open('recetas.json','r') as archivo:
+                lista_r=json.load(archivo) 
+                receta=random.choice(lista_r['recetas'])
+            with open('receta_del_dia.json','w') as archivo:  
+                data={}
+                data['recetas']=[receta]
+                data['fecha']=(str)(datetime.datetime.now().strftime('%Y-%m-%d'))
+                json.dump(data,archivo,indent=4) 
+            return receta 
+        if lista['fecha']==(str)(datetime.datetime.now().strftime('%Y-%m-%d')):
+            with open('receta_del_dia.json','r') as archivo:
+                lista_g=json.load(archivo)   
+                return lista_g['recetas'][0]    
     
     def buscar_receta_nombre(nombre):
         try:
