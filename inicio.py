@@ -43,7 +43,9 @@ class Inicio(ttk.Frame):
                 self.texto.set('Cargando y leyendo fichero...')
         if x==100:
             self.parent.destroy()    
-        
+
+
+      
     
         
         

@@ -1,27 +1,32 @@
 {
     "recetas": [
         {
-            "Nombre": "papa",
+            "Nombre": "Milanesa",
             "Ingredientes": [
                 [
-                    3,
-                    "un",
-                    "papa"
+                    200,
+                    "gr",
+                    "carne"
                 ],
                 [
-                    14,
+                    200,
                     "gr",
-                    "sal"
+                    "pan rallado"
+                ],
+                [
+                    2,
+                    "un",
+                    "huevo"
                 ]
             ],
-            "Preparacion": "qwertyuiosdfghjsvdjanskdnaklndlaknfkjdkvjhbwbrijnfkdjbfjsdbfjankdnaksjndkjfksdbfkjsdfjb\n\n\n",
-            "Imagen": "123.png",
-            "Tiempo_preparacion": 120,
-            "Tiempo_coccion": 20,
-            "Fecha_creacion": "2023-03-21 04:02:37",
-            "Etiquetas": "rico,saludable,casero",
-            "Favorita": true
+            "Preparacion": "mezclar los huevos con el ajo y el perejil.\npasar la carne por la mezcla.\nrebozar la carne en el pan rallado.\nfritar hasta que la carne queda cocida.\n",
+            "Imagen": "milanesa.png",
+            "Tiempo_preparacion": 20,
+            "Tiempo_coccion": 5,
+            "Fecha_creacion": "2023-03-22 04:51:50",
+            "Etiquetas": "frito,horno",
+            "Favorita": false
         }
     ],
-    "fecha": "2023-03-23"
+    "fecha": "2023-04-10"
 }

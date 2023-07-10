@@ -49,7 +49,6 @@ class App(ttk.Frame):
         self.lista_filtro["values"] = ('Nombre','Etiqueta','Tiempo de Preparación','Ingrediente','Favorita')
         self.lista_filtro["state"] = "readonly"        
         self.lista_filtro.grid(row=0,column=1,pady=10,padx=(0,15))
-        print(self.combo_lista.get())
         self.lista_filtro.bind('<<ComboboxSelected>>', self.elementos_lista)
         
         self.lb_seleccion=ttk.Label(self.frame_filtro,text='Elegir opción: ').grid(row=1,column=0,sticky=E,pady=10,padx=(15,0))
@@ -103,7 +102,7 @@ class App(ttk.Frame):
         self.tabla.column('#0',width=120,anchor='center')
         self.tabla.column('Nombre',width=150,anchor='center')
         self.tabla.column('Tiempo de Preparación',width=120,anchor='center')
-        self.tabla.column('Tiempo de Cocción',width=120,anchor='center')
+        self.tabla.column('Tiempo de Cocción',width=120,anchor='center')    
         
     def mostrar_recetas(self):
         for i in self.tabla.get_children():
@@ -145,7 +144,13 @@ class App(ttk.Frame):
                     "\n" + "".join(fila)))
                 if res:
                     self.tabla.delete(item)
+                    rec=Receta.buscar_receta_nombre(fila)
+                    ruta_img=rec['Imagen']
+                    print(ruta_img)
+                    if ruta_img != 'sin_imagen.jpg':
+                        remove(f'media/{ruta_img}')
                     Receta.eliminar_receta(fila)
+                    
         else:
             showinfo(message="Debe seleccionar un elemento primero")  
             
@@ -252,7 +257,7 @@ class App(ttk.Frame):
                     self.tabla.insert("","end",image=self.img_red,values=(r['Nombre'],'Tiempo Preparación:\n'+str(r['Tiempo_preparacion'])+' Minutos','Tiempo de Cocción:\n'+str(r['Tiempo_coccion'])+' Minutos'))        
        
             
-
-Inicio(tk.Tk()).mainloop()      
-App(tk.Tk()).mainloop()
+if __name__=='__main__':
+    Inicio(tk.Tk()).mainloop()      
+    App(tk.Tk()).mainloop()
             
