@@ -25,7 +25,7 @@ class MostrarReceta(ttk.Frame):
         self.carpeta_img=os.path.join(carpeta_principal,'media')
         imagen=Image.open(os.path.join(self.carpeta_img,imagen))
         self.img=ImageTk.PhotoImage(imagen)
-        imagen_red=imagen.resize((400,300),Image.ANTIALIAS)
+        imagen_red=imagen.resize((400,300),Image.LANCZOS)
         self.img_red=ImageTk.PhotoImage(imagen_red)
         
         titulo=tkFont.Font(family='Arial',size=30,weight='bold')
